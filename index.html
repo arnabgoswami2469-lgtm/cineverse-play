@@ -4,529 +4,224 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CINEVERSE PLAY</title>
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Supabase JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #00c288;
-      --primary-dark: #042417;
-      --bg: #07090e;
-      --card-bg: #181c26;
-      --text-muted: #8e95a5;
-    }
+    :root{--p:#00c288;--pd:#042417;--bg:#07090e;--card:#121620;--txt:#8e95a5;}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans',sans-serif;-webkit-tap-highlight-color:transparent;}
+    body{background:var(--bg);color:#fff;padding-bottom:80px;}
+    
+    /* Header */
+    .header{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:linear-gradient(180deg,#07090e 0%,transparent 100%);backdrop-filter:blur(8px);}
+    .brand{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;color:#fff;text-decoration:none;}
+    .brand img{height:28px;width:28px;object-fit:contain;}
+    .badges{display:flex;gap:8px;}
+    .badge{background:rgba(255,255,255,0.12);padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px;cursor:pointer;}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    /* Tab Views */
+    .tab{display:none;} .tab.active{display:block;}
 
-    body {
-      background-color: var(--bg);
-      color: #ffffff;
-      padding-bottom: 90px;
-      overflow-x: hidden;
-    }
+    /* Home */
+    .hero{min-height:480px;background:linear-gradient(180deg,transparent 30%,#07090e 100%),url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1000') center/cover;display:flex;flex-direction:column;justify-content:flex-end;padding:20px 16px;}
+    .hero h1{font-size:28px;font-weight:800;margin:6px 0;}
+    .hero p{font-size:13px;color:#9ca3af;margin-bottom:16px;}
+    .hero-btn{display:flex;gap:10px;margin-bottom:14px;}
+    .btn-p{flex:1;background:var(--p);color:var(--pd);border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;text-align:center;text-decoration:none;}
+    .btn-s{flex:1;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.25);padding:12px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;text-align:center;text-decoration:none;}
+    
+    /* Creator Box */
+    .creator-box{margin:15px 16px;background:#121920;border:1px solid rgba(0,194,136,0.3);padding:12px 14px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;}
+    .creator-box p{font-size:12px;color:#cbd5e1;}
+    .creator-box a{background:var(--p);color:var(--pd);padding:7px 12px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;}
 
-    /* Top Navigation Bar */
-    .top-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px;
-      background: linear-gradient(180deg, rgba(7, 9, 14, 0.96) 0%, rgba(7, 9, 14, 0.6) 70%, rgba(7, 9, 14, 0) 100%);
-      backdrop-filter: blur(10px);
-    }
+    /* Section Rails */
+    .sec{padding:14px 16px;}
+    .sec-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:12px;}
+    .sec-title::before{content:'';width:4px;height:14px;background:var(--p);border-radius:2px;}
+    .scroller{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;}
+    .scroller::-webkit-scrollbar{display:none;}
+    .p-card{flex:0 0 130px;height:180px;background:var(--card);border-radius:8px;border:1px dashed rgba(255,255,255,0.15);display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--txt);font-size:11px;cursor:pointer;}
+    
+    /* Languages Grid */
+    .lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .lang-item{height:54px;border-radius:8px;display:flex;align-items:center;padding:0 12px;font-weight:700;font-size:13px;gap:10px;cursor:pointer;}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
+    /* Search Tab */
+    .search-box{padding:75px 16px 20px;}
+    .input-bar{background:#141720;padding:10px 14px;border-radius:8px;display:flex;align-items:center;gap:8px;}
+    .input-bar input{border:none;background:transparent;color:#fff;width:100%;outline:none;}
+    .trend-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;}
+    .trend-num{color:var(--p);font-weight:800;font-size:14px;}
 
-    .brand img {
-      height: 32px;
-      width: 32px;
-      object-fit: contain;
-    }
+    /* Rewards Tab */
+    .rewards-box{padding:90px 16px;text-align:center;}
+    .gift-btn{width:90px;height:90px;border-radius:50%;border:2px solid var(--p);margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:36px;}
 
-    .brand span {
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      color: #ffffff;
-    }
+    /* Profile Tab */
+    .profile-box{padding:70px 16px 20px;}
+    .profile-head{text-align:center;padding:20px;background:#10151c;border-radius:12px;margin-bottom:18px;}
+    .avatar{width:75px;height:75px;border-radius:50%;border:2px solid var(--p);margin:0 auto 10px;background:#1b2430;display:flex;align-items:center;justify-content:center;font-size:28px;}
+    .menu-row{background:var(--card);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;font-size:13px;}
+    .menu-row:first-child{border-radius:10px 10px 0 0;} .menu-row:last-child{border-radius:0 0 10px 10px;border-bottom:none;}
 
-    .top-badges {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    /* Center Action Sheet Modal */
+    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:95;}
+    .sheet{display:none;position:fixed;bottom:70px;left:14px;right:14px;background:#11161f;border:1px solid rgba(0,194,136,0.3);border-radius:16px;padding:18px 12px;z-index:96;}
+    .sheet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;}
+    .sheet-btn{background:#18202b;padding:12px 6px;border-radius:10px;color:var(--p);font-size:11px;cursor:pointer;}
+    .sheet-btn div{font-size:18px;margin-bottom:4px;}
 
-    .badge-pill {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      padding: 5px 11px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #ffffff;
-    }
-
-    .badge-pill svg {
-      width: 15px;
-      height: 15px;
-      color: var(--primary);
-    }
-
-    /* Hero Banner */
-    .hero-section {
-      position: relative;
-      width: 100%;
-      min-height: 520px;
-      background: linear-gradient(180deg, rgba(7, 9, 14, 0.2) 0%, rgba(7, 9, 14, 0.7) 60%, #07090e 100%),
-                  url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200') center/cover no-repeat;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 24px 16px;
-    }
-
-    .meta-tags {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      font-size: 12px;
-      color: #d1d5db;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    .genre-badge {
-      background: rgba(0, 194, 136, 0.25);
-      border: 1px solid rgba(0, 194, 136, 0.5);
-      color: #a7f3d0;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .hero-title {
-      font-size: 30px;
-      font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
-    }
-
-    .hero-synopsis {
-      font-size: 13px;
-      line-height: 1.45;
-      color: #9ca3af;
-      margin-bottom: 18px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    /* Action Buttons */
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .btn-watch {
-      flex: 1;
-      background: var(--primary);
-      color: var(--primary-dark);
-      border: none;
-      padding: 13px 18px;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(0, 194, 136, 0.35);
-    }
-
-    .btn-info {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #ffffff;
-      padding: 13px 18px;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-
-    /* Slider Dots */
-    .slider-dots {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 4px;
-    }
-
-    .dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    .dot.active {
-      width: 24px;
-      height: 4px;
-      border-radius: 3px;
-      background: var(--primary);
-    }
-
-    /* Creator Submission Banner */
-    .creator-banner {
-      margin: 15px 16px;
-      background: linear-gradient(135deg, #121820 0%, #172421 100%);
-      border: 1px solid rgba(0, 194, 136, 0.3);
-      padding: 14px 16px;
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .creator-banner p {
-      font-size: 13px;
-      color: #d1d5db;
-    }
-
-    .creator-banner a {
-      background: var(--primary);
-      color: var(--primary-dark);
-      text-decoration: none;
-      padding: 9px 15px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0, 194, 136, 0.3);
-    }
-
-    /* Section Content */
-    .section-wrap {
-      padding: 14px 16px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      font-size: 17px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-title::before {
-      content: '';
-      display: inline-block;
-      width: 4px;
-      height: 18px;
-      background: var(--primary);
-      border-radius: 2px;
-    }
-
-    .empty-spotlight {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px dashed rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      padding: 35px 20px;
-      text-align: center;
-    }
-
-    .empty-spotlight h3 {
-      font-size: 15px;
-      font-weight: 600;
-      color: #ffffff;
-      margin-bottom: 6px;
-    }
-
-    .empty-spotlight p {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    /* Video Player Modal */
-    .video-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 2000;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .video-modal video {
-      width: 100%;
-      max-height: 80vh;
-      outline: none;
-    }
-
-    .close-video {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* Bottom App Navigation Bar */
-    .bottom-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 68px;
-      background: rgba(10, 13, 19, 0.96);
-      backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 999;
-      padding: 0 10px;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      text-decoration: none;
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 600;
-      position: relative;
-    }
-
-    .nav-item.active {
-      color: #ffffff;
-    }
-
-    .nav-item.active::after {
-      content: '';
-      width: 4px;
-      height: 4px;
-      background: var(--primary);
-      border-radius: 50%;
-      position: absolute;
-      bottom: -7px;
-    }
-
-    .nav-item svg {
-      width: 22px;
-      height: 22px;
-      stroke-width: 2;
-    }
-
-    .nav-fab-wrap {
-      position: relative;
-      top: -14px;
-    }
-
-    .nav-fab {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #00e5a3 0%, #00b07a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 18px rgba(0, 194, 136, 0.45);
-      border: 3px solid var(--bg);
-      cursor: pointer;
-    }
+    /* Bottom Bar */
+    .nav-bar{position:fixed;bottom:0;left:0;right:0;height:64px;background:#090c12;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-around;align-items:center;z-index:92;}
+    .nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--txt);font-size:11px;font-weight:600;cursor:pointer;}
+    .nav-btn.active{color:#fff;}
+    .nav-btn.active::after{content:'';width:4px;height:4px;background:var(--p);border-radius:50%;margin-top:2px;}
+    .fab{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#00e5a3,#00b07a);display:flex;align-items:center;justify-content:center;margin-top:-14px;border:3px solid var(--bg);cursor:pointer;color:#000;font-weight:900;font-size:18px;}
   </style>
 </head>
 <body>
 
-  <!-- Top Header Bar -->
-  <header class="top-header">
-    <a href="#" class="brand">
+  <!-- Top Header -->
+  <div class="header">
+    <a href="#" class="brand" onclick="goTab('home')">
       <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
       <span>CINEVERSE PLAY</span>
     </a>
-    
-    <div class="top-badges">
-      <div class="badge-pill">
-        <svg fill="currentColor" viewBox="0 0 24 24">
-          <path d="M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.99 1-1.72V9c0-.73-.41-1.37-1-1.72zM20 9v6h-7V9h7z"/>
-        </svg>
-        <span>₹0</span>
+    <div class="badges">
+      <div class="badge" onclick="goTab('profile')">💳 ₹0</div>
+      <div class="badge" onclick="goTab('rewards')">🪙 0</div>
+    </div>
+  </div>
+
+  <!-- HOME TAB -->
+  <div id="home" class="tab active">
+    <div class="hero">
+      <span style="color:var(--p);font-size:11px;font-weight:700;letter-spacing:1px;">2026 • STREAMING PLATFORM</span>
+      <h1>Experience Cinema</h1>
+      <p>স্বাধীন গল্প ও অসাধারণ চলচ্চিত্র উপভোগ করুন CINEVERSE PLAY-তে।</p>
+      <div class="hero-btn">
+        <a href="https://forms.gle/GeeHd26qnq1jZrat9" target="_blank" class="btn-p">Explore Releases</a>
+        <a href="https://forms.gle/GeeHd26qnq1jZrat9" target="_blank" class="btn-s">Submit Film</a>
       </div>
-      <div class="badge-pill">
-        <span style="font-size: 13px;">🪙</span>
-        <span>0</span>
+    </div>
+
+    <div class="creator-box">
+      <div>
+        <b style="font-size:13px;">Are you a Filmmaker?</b>
+        <p>Stream your cinema on CINEVERSE PLAY</p>
+      </div>
+      <a href="https://forms.gle/GeeHd26qnq1jZrat9" target="_blank">Apply Now →</a>
+    </div>
+
+    <!-- Clean Placeholder Rails -->
+    <div class="sec">
+      <div class="sec-title">Trending Content</div>
+      <div class="scroller">
+        <div class="p-card" onclick="alert('কন্টেন্ট শীঘ্রই আসছে!')"><span>🎬 Premiere 1</span><small style="color:#666;">Coming Soon</small></div>
+        <div class="p-card" onclick="alert('কন্টেন্ট শীঘ্রই আসছে!')"><span>🎬 Premiere 2</span><small style="color:#666;">Coming Soon</small></div>
+        <div class="p-card" onclick="alert('কন্টেন্ট শীঘ্রই আসছে!')"><span>🎬 Premiere 3</span><small style="color:#666;">Coming Soon</small></div>
       </div>
     </div>
-  </header>
 
-  <!-- Immersive Hero Banner -->
-  <section class="hero-section">
-    <div class="meta-tags">
-      <span>2026 • STREAMING PLATFORM</span>
-      <span class="genre-badge">CINEMA</span>
-    </div>
-    
-    <h1 class="hero-title">Experience Pure Cinema</h1>
-    
-    <p class="hero-synopsis">
-      প্রতিভাবান নির্মাতাদের সেরা চলচ্চিত্র, শর্ট ফিল্ম ও অনন্য গল্পের অভিজ্ঞতা নিন CINEVERSE PLAY-তে।
-    </p>
-
-    <div class="hero-actions">
-      <button class="btn-watch" onclick="document.getElementById('form-link').click()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        Explore Platform
-      </button>
-      <button class="btn-info" onclick="document.getElementById('form-link').click()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Submit Film
-      </button>
+    <div class="sec">
+      <div class="sec-title">Featured Films</div>
+      <div class="scroller">
+        <div class="p-card" onclick="alert('কন্টেন্ট শীঘ্রই আসছে!')"><span>🍿 Feature 1</span><small style="color:#666;">Coming Soon</small></div>
+        <div class="p-card" onclick="alert('কন্টেন্ট শীঘ্রই আসছে!')"><span>🍿 Feature 2</span><small style="color:#666;">Coming Soon</small></div>
+        <div class="p-card" onclick="alert('কন্টেন্ট শীঘ্রই আসছে!')"><span>🍿 Feature 3</span><small style="color:#666;">Coming Soon</small></div>
+      </div>
     </div>
 
-    <!-- Carousel Dots -->
-    <div class="slider-dots">
-      <div class="dot active"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
+    <!-- Languages -->
+    <div class="sec">
+      <div class="sec-title">Languages</div>
+      <div class="lang-grid">
+        <div class="lang-item" style="background:linear-gradient(135deg,#1d4e89,#0077b6)">Bengali</div>
+        <div class="lang-item" style="background:linear-gradient(135deg,#1b4332,#2d6a4f)">Hindi</div>
+        <div class="lang-item" style="background:linear-gradient(135deg,#3a0ca3,#4361ee)">English</div>
+        <div class="lang-item" style="background:linear-gradient(135deg,#480ca8,#7209b7)">Others</div>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Creator Submission Banner (Direct Google Form Link) -->
-  <div class="creator-banner">
+  <!-- SEARCH TAB -->
+  <div id="search" class="tab search-box">
+    <div class="input-bar">
+      <span>🔍</span>
+      <input type="text" placeholder="Search films, categories...">
+    </div>
+    <div style="margin-top:20px;">
+      <p style="color:var(--p);font-size:13px;font-weight:700;margin-bottom:10px;">Trending Searches</p>
+      <div class="trend-item" onclick="alert('শীঘ্রই আসছে')"><span class="trend-num">1</span> <span>New Releases 2026</span></div>
+      <div class="trend-item" onclick="alert('শীঘ্রই আসছে')"><span class="trend-num">2</span> <span>Short Films & Drama</span></div>
+      <div class="trend-item" onclick="alert('শীঘ্রই আসছে')"><span class="trend-num">3</span> <span>Independent Movies</span></div>
+    </div>
+  </div>
+
+  <!-- REWARDS TAB -->
+  <div id="rewards" class="tab rewards-box">
+    <div class="gift-btn">🎁</div>
+    <h3 style="font-size:18px;margin-bottom:6px;">No Rewards Yet?</h3>
+    <p style="color:var(--txt);font-size:12px;margin-bottom:20px;">Your Next Stream Could Change That!</p>
+    <button class="btn-p" style="display:inline-block;padding:10px 24px;" onclick="goTab('home')">Explore Now</button>
+  </div>
+
+  <!-- PROFILE TAB -->
+  <div id="profile" class="tab profile-box">
+    <div class="profile-head">
+      <div class="avatar">👤</div>
+      <h3 style="font-size:18px;">Creator Profile</h3>
+      <p style="color:var(--txt);font-size:12px;">CINEVERSE PLAY Account</p>
+    </div>
+    <div style="color:var(--p);font-size:12px;font-weight:700;margin-bottom:8px;">ACCOUNT</div>
     <div>
-      <p style="font-weight: 700; color: #fff; margin-bottom: 2px;">Submit Your Film</p>
-      <p>Stream your cinema on CINEVERSE PLAY</p>
-    </div>
-    <a href="https://docs.google.com/forms/d/1lcOM6snsX-fwBEW_XnB457sQLoK9oGTA6n4j0X2-w5c/viewform" target="_blank" id="form-link">Apply Now →</a>
-  </div>
-
-  <!-- Spotlight Section (Clean Placeholder State) -->
-  <div class="section-wrap">
-    <div class="section-header">
-      <div class="section-title">Spotlight</div>
-    </div>
-
-    <div class="empty-spotlight">
-      <h3>New Premieres Arriving Soon</h3>
-      <p>নতুন চলচ্চিত্র ও ওয়েব সিরিজ প্রদর্শনের জন্য কিউরেশন চলছে।<br>নির্মাতারা নিজেদের কাজ প্রিমিয়ার করতে ওপরের লিঙ্কে আবেদন করুন।</p>
+      <div class="menu-row" onclick="alert('Profile Settings')"><span>⚙️ Profile Settings</span><span>›</span></div>
+      <div class="menu-row" onclick="alert('Wallet Balance: ₹0')"><span>💳 Wallet (₹0)</span><span>›</span></div>
+      <div class="menu-row" onclick="alert('Purchase History')"><span>🎟️ Purchase History</span><span>›</span></div>
+      <div class="menu-row" onclick="window.open('https://forms.gle/GeeHd26qnq1jZrat9','_blank')"><span>📤 Submit Film Form</span><span>›</span></div>
     </div>
   </div>
 
-  <!-- Video Player Modal -->
-  <div class="video-modal" id="video-modal">
-    <button class="close-video" onclick="closePlayer()">✕ Close</button>
-    <video id="player" controls playsinline></video>
+  <!-- Bottom Sheet Menu -->
+  <div class="overlay" id="overlay" onclick="toggleSheet()"></div>
+  <div class="sheet" id="sheet">
+    <div style="width:36px;height:4px;background:var(--p);border-radius:2px;margin:0 auto 14px;"></div>
+    <div class="sheet-grid">
+      <div class="sheet-btn" onclick="alert('Purchase');toggleSheet();"><div>🛍️</div>Purchase</div>
+      <div class="sheet-btn" onclick="alert('Wallet: ₹0');toggleSheet();"><div>💳</div>Wallet</div>
+      <div class="sheet-btn" onclick="navigator.clipboard.writeText(location.href);alert('লিঙ্ক কপি হয়েছে!');toggleSheet();"><div>🔗</div>Refer</div>
+      <div class="sheet-btn" onclick="alert('Settings');toggleSheet();"><div>⚙️</div>Settings</div>
+    </div>
   </div>
 
-  <!-- Bottom App Navigation Bar -->
-  <nav class="bottom-bar">
-    <a href="#" class="nav-item active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span>Home</span>
-    </a>
-
-    <a href="#" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <span>Search</span>
-    </a>
-
-    <div class="nav-fab-wrap">
-      <div class="nav-fab" onclick="alert('Cineverse Quick Action')">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="#042417">
-          <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
-        </svg>
-      </div>
-    </div>
-
-    <a href="#" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/></svg>
-      <span>Rewards</span>
-    </a>
-
-    <a href="#" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <span>Profile</span>
-    </a>
-  </nav>
+  <!-- Fixed Bottom Nav -->
+  <div class="nav-bar">
+    <div class="nav-btn active" id="btn-home" onclick="goTab('home')"><span>🏠</span><span>Home</span></div>
+    <div class="nav-btn" id="btn-search" onclick="goTab('search')"><span>🔍</span><span>Search</span></div>
+    <div class="fab" onclick="toggleSheet()">•••</div>
+    <div class="nav-btn" id="btn-rewards" onclick="goTab('rewards')"><span>🎁</span><span>Rewards</span></div>
+    <div class="nav-btn" id="btn-profile" onclick="goTab('profile')"><span>👤</span><span>Profile</span></div>
+  </div>
 
   <script>
-    function openPlayer(url) {
-      const modal = document.getElementById('video-modal');
-      const player = document.getElementById('player');
-      player.src = url;
-      modal.style.display = 'flex';
-      player.play();
+    function goTab(t){
+      document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(e=>e.classList.remove('active'));
+      document.getElementById(t).classList.add('active');
+      const b=document.getElementById('btn-'+t);
+      if(b) b.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+      closeSheet();
     }
-
-    function closePlayer() {
-      const modal = document.getElementById('video-modal');
-      const player = document.getElementById('player');
-      player.pause();
-      player.src = '';
-      modal.style.display = 'none';
+    let open=false;
+    function toggleSheet(){
+      open=!open;
+      document.getElementById('sheet').style.display=open?'block':'none';
+      document.getElementById('overlay').style.display=open?'block':'none';
+    }
+    function closeSheet(){
+      open=false;
+      document.getElementById('sheet').style.display='none';
+      document.getElementById('overlay').style.display='none';
     }
   </script>
 </body>
