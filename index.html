@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CINEVERSE PLAY</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: #0b0b12; color: #fff; padding-bottom: 60px; }
+    header { background: #14141f; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e50914; position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 22px; font-weight: bold; color: #e50914; letter-spacing: 1px; }
+    .hero { position: relative; width: 100%; height: 260px; background: linear-gradient(to top, #0b0b12, transparent), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200') center/cover; display: flex; align-items: flex-end; padding: 20px; }
+    .hero h1 { font-size: 22px; margin-bottom: 6px; }
+    .container { padding: 20px 15px; }
+    h2 { font-size: 18px; margin-bottom: 15px; border-left: 4px solid #e50914; padding-left: 10px; }
+    .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+    .card { background: #181824; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    .card:active { transform: scale(0.97); }
+    .card img { width: 100%; height: 190px; object-fit: cover; display: block; }
+    .card-info { padding: 10px; }
+    .card-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-cat { font-size: 11px; color: #999; margin-top: 4px; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999; justify-content: center; align-items: center; flex-direction: column; padding: 15px; }
+    .modal video { width: 100%; max-width: 800px; max-height: 70vh; border-radius: 8px; outline: none; }
+    .close-btn { margin-top: 15px; background: #e50914; border: none; color: #fff; padding: 10px 25px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">CINEVERSE PLAY</div>
+  </header>
+
+  <div class="hero">
+    <div>
+      <h1>সিনেমা ও বিনোদন</h1>
+      <p style="color: #bbb; font-size: 13px;">অনলাইনে স্ট্রিম করুন যেকোনো সময়</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>সর্বশেষ কন্টেন্ট</h2>
+    <div class="movie-grid" id="movies-container">
+      <p style="color:#777;">কন্টেন্ট লোড হচ্ছে...</p>
+    </div>
+  </div>
+
+  <div class="modal" id="player-modal">
+    <video id="video-player" controls playsinline></video>
+    <button class="close-btn" onclick="closePlayer()">বন্ধ করুন</button>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://tysjciwbfbnrgctofntj.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_ai7wqigMAFfVmo_pwWzNDg_pQsKPjPR";
+
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function fetchMovies() {
+      const container = document.getElementById('movies-container');
+      const { data, error } = await client.from('movies').select('*');
+      if (error || !data || data.length === 0) {
+        container.innerHTML = '<p style="color:#aaa;">কোনো কন্টেন্ট পাওয়া যায়নি।</p>';
+        return;
+      }
+      container.innerHTML = '';
+      data.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => playMovie(movie.video_url);
+        card.innerHTML = `
+          <img src="${movie.thumbnail_url || 'https://via.placeholder.com/150x200'}" alt="${movie.title}">
+          <div class="card-info">
+            <div class="card-title">${movie.title}</div>
+            <div class="card-cat">${movie.category || 'Movie'}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function playMovie(url) {
+      const modal = document.getElementById('player-modal');
+      const player = document.getElementById('video-player');
+      player.src = url;
+      modal.style.display = 'flex';
+      player.play();
+    }
+
+    function closePlayer() {
+      const modal = document.getElementById('player-modal');
+      const player = document.getElementById('video-player');
+      player.pause();
+      player.src = '';
+      modal.style.display = 'none';
+    }
+
+    fetchMovies();
+  </script>
+</body>
+</html>
