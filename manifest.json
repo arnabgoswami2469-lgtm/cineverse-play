@@ -2,13 +2,27 @@
   "name": "CINEVERSE PLAY",
   "short_name": "Cineverse",
   "description": "Stream independent films and series on CINEVERSE PLAY",
-  "start_url": "./index.html",
+  "start_url": "index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#07090e",
   "theme_color": "#07090e",
   "icons": [
     {
       "src": "57775.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "57775.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
