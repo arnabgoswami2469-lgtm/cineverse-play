@@ -1,56 +1,66 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" style="background-color:#05070a;color-scheme:dark;">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>CINEVERSE PLAY</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#05070a"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#05070a"><meta name="color-scheme" content="dark">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+/* Instant Dark Background to Stop White Flash */
+html,body{background-color:#05070a !important;margin:0;padding:0;overflow-x:hidden;}
+</style>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--g:#e5a93b;--bg:#07090e;--c:#121622;--t:#8e95a5;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans',sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow-x:hidden;}
+body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
 
 /* ==========================================
-   PREMIUM SPLASH SCREEN (ABC TALKIES STYLE)
+   100% COVER CINEMATIC SPLASH SCREEN 
    ========================================== */
 #splash{
-  position:fixed;inset:0;background:#05070a;z-index:9999;
+  position:fixed;top:0;left:0;width:100vw;height:100vh;
+  background:#05070a;z-index:999999;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
-  transition:opacity 0.6s ease, visibility 0.6s ease;
+  transition:opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
-#splash.fade-out{opacity:0;visibility:hidden;pointer-events:none;}
-.splash-logo{
-  animation:popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+#splash.fade-out{opacity:0;pointer-events:none;}
+.splash-box{
   display:flex;flex-direction:column;align-items:center;
+  animation:splashZoom 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.splash-logo{
+  width:95px;height:95px;border-radius:20px;
+  object-fit:cover;box-shadow:0 8px 30px rgba(229,169,59,0.3);
 }
 .splash-title{
-  margin-top:14px;font-size:22px;font-weight:900;letter-spacing:1.5px;
-  background:linear-gradient(135deg,#ffffff 40%,#e5a93b 100%);
+  margin-top:16px;font-size:24px;font-weight:900;letter-spacing:1.5px;
+  background:linear-gradient(135deg,#ffffff 45%,#e5a93b 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
 .splash-tagline{
   position:absolute;bottom:45px;text-align:center;
-  color:#64748b;font-size:11px;font-weight:700;letter-spacing:1.5px;
-  text-transform:uppercase;animation:fadeIn 1.2s ease forwards;
+  color:#64748b;font-size:11px;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;animation:splashFadeIn 1.4s ease forwards;
 }
-.splash-tagline span{color:#e5a93b;}
+.splash-tagline span{color:var(--g);}
 
-@keyframes popIn{
-  0%{transform:scale(0.7);opacity:0;}
+@keyframes splashZoom{
+  0%{transform:scale(0.8);opacity:0;}
   100%{transform:scale(1);opacity:1;}
 }
-@keyframes fadeIn{
-  0%{opacity:0;transform:translateY(8px);}
+@keyframes splashFadeIn{
+  0%{opacity:0;transform:translateY(10px);}
   100%{opacity:1;transform:translateY(0);}
 }
 
-/* Header */
+/* Header & Navigation */
 .top{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(7,9,14,.95);border-bottom:1px solid rgba(229,169,59,.25);}
 .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;cursor:pointer;}
+.brand-img{width:26px;height:26px;border-radius:6px;object-fit:cover;}
 .badges{display:flex;gap:6px;}
 .badge{background:rgba(255,255,255,.08);border:1px solid rgba(229,169,59,.35);padding:4px 9px;border-radius:15px;font-size:11px;font-weight:700;cursor:pointer;}
 
-/* Tabs & UI */
 .tab{display:none;padding:55px 14px 20px;} .tab.active{display:block;}
 .btn-g{background:linear-gradient(135deg,#f5b748,#d89020);color:#000;border:none;padding:10px;border-radius:7px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;display:inline-block;}
 .btn-o{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:10px;border-radius:7px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;display:inline-block;}
@@ -79,27 +89,20 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
 </head>
 <body>
 
+<!-- 1. FULLSCREEN CINEMATIC SPLASH -->
 <div id="splash">
-  <div class="splash-logo">
-    <svg width="68" height="68" viewBox="0 0 100 100">
-      <defs>
-        <linearGradient id="spG1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFB300"/><stop offset="50%" stop-color="#FF3D00"/><stop offset="100%" stop-color="#E50914"/></linearGradient>
-        <linearGradient id="spG2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1E88E5"/><stop offset="100%" stop-color="#8E24AA"/></linearGradient>
-      </defs>
-      <path d="M20 15 C35 5, 65 5, 75 15 C85 25, 75 38, 65 38 C50 38, 35 52, 30 68 C25 82, 10 74, 12 58 Z" fill="url(#spG1)"/>
-      <path d="M75 15 C85 30, 88 50, 78 68 C68 84, 46 88, 36 78 C48 78, 70 56, 70 30 Z" fill="url(#spG2)"/>
-    </svg>
+  <div class="splash-box">
+    <!-- 3D Logo from your file icon.png (Fallback to 57775.png) -->
+    <img src="icon.png" onerror="this.onerror=null;this.src='57775.png';" class="splash-logo" alt="Cineverse Play">
     <div class="splash-title">CINEVERSE PLAY</div>
   </div>
   <div class="splash-tagline">The Universe of <span>Pure Cinema</span></div>
 </div>
 
+<!-- 2. TOP HEADER -->
 <div class="top">
   <div class="brand" onclick="goTab('home')">
-    <svg width="26" height="26" viewBox="0 0 100 100">
-      <path d="M20 15 C35 5, 65 5, 75 15 C85 25, 75 38, 65 38 C50 38, 35 52, 30 68 C25 82, 10 74, 12 58 Z" fill="url(#spG1)"/>
-      <path d="M75 15 C85 30, 88 50, 78 68 C68 84, 46 88, 36 78 C48 78, 70 56, 70 30 Z" fill="url(#spG2)"/>
-    </svg>
+    <img src="icon.png" onerror="this.onerror=null;this.src='57775.png';" class="brand-img" alt="Logo">
     <span>CINEVERSE PLAY</span>
   </div>
   <div class="badges">
@@ -108,6 +111,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   </div>
 </div>
 
+<!-- 3. HOME TAB -->
 <div id="home" class="tab active" style="padding-top:45px;">
   <div class="hero">
     <small style="color:var(--g);font-weight:800;">2026 • STREAMING PLATFORM</small>
@@ -138,6 +142,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   </div>
 </div>
 
+<!-- 4. SEARCH TAB -->
 <div id="search" class="tab">
   <input type="text" placeholder="Search films, categories..." style="width:100%;padding:10px;background:#111520;border:1px solid rgba(229,169,59,.3);color:#fff;border-radius:6px;outline:none;">
   <div class="sec-t">Trending</div>
@@ -146,6 +151,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   <div class="item" onclick="alert('শীঘ্রই আসছে')"><span>3. Independent Movies</span><span style="color:var(--g)">›</span></div>
 </div>
 
+<!-- 5. REWARDS TAB -->
 <div id="rewards" class="tab" style="text-align:center;padding-top:70px;">
   <div style="font-size:36px;">🎁</div>
   <h2 style="font-size:16px;margin:8px 0 4px;">No Rewards Yet?</h2>
@@ -153,6 +159,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   <button class="btn-g" onclick="goTab('home')">Explore Now</button>
 </div>
 
+<!-- 6. PROFILE TAB -->
 <div id="profile" class="tab">
   <div style="text-align:center;background:#111520;padding:14px;border-radius:8px;border:1px solid rgba(229,169,59,.2);margin-bottom:10px;">
     <div style="font-size:26px;">👤</div>
@@ -166,6 +173,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   <div class="item" onclick="window.open('https://forms.gle/GeeHd26qnq1jZrat9','_blank')"><span>📤 Submit Film Form</span><span>›</span></div>
 </div>
 
+<!-- 7. WALLET TAB -->
 <div id="wallet" class="tab">
   <button class="btn-o" style="padding:4px 8px;font-size:11px;margin-bottom:8px;" onclick="goTab('home')">‹ Back</button>
   <div class="w-card">
@@ -186,6 +194,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   <button class="btn-g" style="width:100%;margin-top:8px;" onclick="payNow()">Proceed to Pay</button>
 </div>
 
+<!-- 8. PURCHASE TAB -->
 <div id="purchase" class="tab" style="text-align:center;padding-top:70px;">
   <button class="btn-o" style="padding:4px 8px;font-size:11px;margin-bottom:8px;" onclick="goTab('home')">‹ Back</button>
   <div style="font-size:32px;margin-top:10px;">🎟️</div>
@@ -194,6 +203,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   <button class="btn-g" onclick="goTab('home')">Browse Movies</button>
 </div>
 
+<!-- 9. REFER TAB -->
 <div id="refer" class="tab" style="text-align:center;padding-top:70px;">
   <button class="btn-o" style="padding:4px 8px;font-size:11px;margin-bottom:8px;" onclick="goTab('home')">‹ Back</button>
   <div style="font-size:32px;margin-top:10px;">🎁</div>
@@ -205,6 +215,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   <button class="btn-g" style="width:100%;background:#25D366;color:#fff;" onclick="window.open('https://api.whatsapp.com/send?text=Watch%20cinema%20on%20CINEVERSE%20PLAY!%20'+location.href)">Share on WhatsApp</button>
 </div>
 
+<!-- 10. SETTINGS TAB -->
 <div id="settings" class="tab">
   <button class="btn-o" style="padding:4px 8px;font-size:11px;margin-bottom:8px;" onclick="goTab('home')">‹ Back</button>
   <div class="item" onclick="alert('Quality: Auto')"><span>Video Quality</span><span>Auto</span></div>
@@ -213,6 +224,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   <div class="item" onclick="alert('CINEVERSE PLAY v2.4')"><span>App Version</span><span>v2.4</span></div>
 </div>
 
+<!-- Bottom Action Sheet -->
 <div class="sheet" id="sheet">
   <div class="sheet-g">
     <div class="s-btn" onclick="goTab('purchase');toggleS();">🎟️<br>Purchase</div>
@@ -222,6 +234,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
   </div>
 </div>
 
+<!-- Bottom Navigation Bar -->
 <div class="nav">
   <div class="nav-i active" id="b-home" onclick="goTab('home')">🏠<span>Home</span></div>
   <div class="nav-i" id="b-search" onclick="goTab('search')">🔍<span>Search</span></div>
@@ -231,12 +244,15 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;overflow
 </div>
 
 <script>
-// Splash screen fades out smoothly after 1.5 seconds
+// Perfectly timed 2.8s splash screen with clean removal
 window.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
-    const splash = document.getElementById('splash');
-    if (splash) splash.classList.add('fade-out');
-  }, 1500);
+    const s = document.getElementById('splash');
+    if (s) {
+      s.classList.add('fade-out');
+      setTimeout(() => { s.style.display = 'none'; }, 700);
+    }
+  }, 2800);
 });
 
 let amt=100,pay='gpay';
@@ -262,4 +278,5 @@ function payNow(){
 }
 </script>
 </body>
-</html>
+   </html>
+     
