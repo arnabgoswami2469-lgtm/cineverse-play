@@ -212,6 +212,10 @@ function payNow(){
   else if(pay==='paytm'){window.location.href=`paytmmp://pay?${upi}`;setTimeout(()=>window.location.href=`upi://pay?${upi}`,1000);}
   else{window.location.href=`upi://pay?${upi}`;}
 }
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+
 </script>
 </body>
 </html>
