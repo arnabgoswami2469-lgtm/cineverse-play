@@ -2,6 +2,9 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>CINEVERSE PLAY</title>
+<!-- PWABuilder Manifest Link -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#07090e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--g:#e5a93b;--bg:#07090e;--c:#121622;--t:#8e95a5;}
@@ -18,6 +21,8 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
 .c-box{background:#111520;border:1px solid rgba(229,169,59,.3);padding:10px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;margin:12px 0;}
 .sec-t{font-size:14px;font-weight:700;margin:12px 0 6px;display:flex;align-items:center;gap:6px;}
 .sec-t::before{content:'';width:3px;height:12px;background:var(--g);}
+.lang-g{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.lang-i{height:44px;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-weight:700;font-size:12px;cursor:pointer;}
 .item{background:var(--c);padding:12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer;}
 .w-card{background:#111520;border:1px solid var(--g);border-radius:10px;padding:16px;text-align:center;margin-bottom:12px;}
 .chips{display:flex;gap:6px;justify-content:center;margin:8px 0 12px;}
@@ -55,6 +60,7 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
   </div>
 </div>
 
+<!-- 1. HOME TAB -->
 <div id="home" class="tab active" style="padding-top:45px;">
   <div class="hero">
     <small style="color:var(--g);font-weight:800;">2026 • STREAMING PLATFORM</small>
@@ -65,16 +71,29 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
       <a href="https://forms.gle/GeeHd26qnq1jZrat9" target="_blank" class="btn-o" style="flex:1;">Submit Film</a>
     </div>
   </div>
+
   <div class="c-box">
     <div><b>Are you a Filmmaker?</b><p style="color:#aaa;font-size:11px;">Stream your film on platform</p></div>
     <a href="https://forms.gle/GeeHd26qnq1jZrat9" target="_blank" class="btn-g" style="padding:6px 10px;font-size:11px;">Apply Now</a>
   </div>
+
+  <!-- Spotlight -->
   <div class="sec-t">Spotlight</div>
-  <div style="background:#11141d;border:1px dashed rgba(229,169,59,.3);padding:20px;border-radius:8px;text-align:center;color:#888;">
+  <div style="background:#11141d;border:1px dashed rgba(229,169,59,.3);padding:18px;border-radius:8px;text-align:center;color:#888;">
     <b>New Premieres Arriving Soon</b>
+  </div>
+
+  <!-- Languages Section (Restored) -->
+  <div class="sec-t">Languages</div>
+  <div class="lang-g">
+    <div class="lang-i" style="background:linear-gradient(135deg,#1d4e89,#0077b6)" onclick="goTab('search')">Bengali</div>
+    <div class="lang-i" style="background:linear-gradient(135deg,#1b4332,#2d6a4f)" onclick="goTab('search')">Hindi</div>
+    <div class="lang-i" style="background:linear-gradient(135deg,#3a0ca3,#4361ee)" onclick="goTab('search')">English</div>
+    <div class="lang-i" style="background:linear-gradient(135deg,#480ca8,#7209b7)" onclick="goTab('search')">Others</div>
   </div>
 </div>
 
+<!-- 2. SEARCH TAB -->
 <div id="search" class="tab">
   <input type="text" placeholder="Search films, categories..." style="width:100%;padding:10px;background:#111520;border:1px solid rgba(229,169,59,.3);color:#fff;border-radius:6px;outline:none;">
   <div class="sec-t">Trending</div>
@@ -83,6 +102,7 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
   <div class="item" onclick="alert('শীঘ্রই আসছে')"><span>3. Independent Movies</span><span style="color:var(--g)">›</span></div>
 </div>
 
+<!-- 3. REWARDS TAB -->
 <div id="rewards" class="tab" style="text-align:center;padding-top:70px;">
   <div style="font-size:36px;">🎁</div>
   <h2 style="font-size:16px;margin:8px 0 4px;">No Rewards Yet?</h2>
@@ -90,6 +110,7 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
   <button class="btn-g" onclick="goTab('home')">Explore Now</button>
 </div>
 
+<!-- 4. PROFILE TAB -->
 <div id="profile" class="tab">
   <div style="text-align:center;background:#111520;padding:14px;border-radius:8px;border:1px solid rgba(229,169,59,.2);margin-bottom:10px;">
     <div style="font-size:26px;">👤</div>
@@ -103,6 +124,7 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
   <div class="item" onclick="window.open('https://forms.gle/GeeHd26qnq1jZrat9','_blank')"><span>📤 Submit Film Form</span><span>›</span></div>
 </div>
 
+<!-- 5. WALLET TAB -->
 <div id="wallet" class="tab">
   <button class="btn-o" style="padding:4px 8px;font-size:11px;margin-bottom:8px;" onclick="goTab('home')">‹ Back</button>
   <div class="w-card">
@@ -123,6 +145,7 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
   <button class="btn-g" style="width:100%;margin-top:8px;" onclick="payNow()">Proceed to Pay</button>
 </div>
 
+<!-- 6. PURCHASE TAB -->
 <div id="purchase" class="tab" style="text-align:center;padding-top:70px;">
   <button class="btn-o" style="padding:4px 8px;font-size:11px;margin-bottom:8px;" onclick="goTab('home')">‹ Back</button>
   <div style="font-size:32px;margin-top:10px;">🎟️</div>
@@ -131,6 +154,7 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
   <button class="btn-g" onclick="goTab('home')">Browse Movies</button>
 </div>
 
+<!-- 7. REFER TAB -->
 <div id="refer" class="tab" style="text-align:center;padding-top:70px;">
   <button class="btn-o" style="padding:4px 8px;font-size:11px;margin-bottom:8px;" onclick="goTab('home')">‹ Back</button>
   <div style="font-size:32px;margin-top:10px;">🎁</div>
@@ -142,6 +166,7 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
   <button class="btn-g" style="width:100%;background:#25D366;color:#fff;" onclick="window.open('https://api.whatsapp.com/send?text=Watch%20cinema%20on%20CINEVERSE%20PLAY!%20'+location.href)">Share on WhatsApp</button>
 </div>
 
+<!-- 8. SETTINGS TAB -->
 <div id="settings" class="tab">
   <button class="btn-o" style="padding:4px 8px;font-size:11px;margin-bottom:8px;" onclick="goTab('home')">‹ Back</button>
   <div class="item" onclick="alert('Quality: Auto')"><span>Video Quality</span><span>Auto</span></div>
@@ -150,6 +175,7 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
   <div class="item" onclick="alert('CINEVERSE PLAY v2.4')"><span>App Version</span><span>v2.4</span></div>
 </div>
 
+<!-- Bottom Action Sheet (•••) -->
 <div class="sheet" id="sheet">
   <div class="sheet-g">
     <div class="s-btn" onclick="goTab('purchase');toggleS();">🎟️<br>Purchase</div>
@@ -159,6 +185,7 @@ body{background:var(--bg);color:#fff;padding-bottom:65px;font-size:13px;}
   </div>
 </div>
 
+<!-- Bottom Navigation Bar -->
 <div class="nav">
   <div class="nav-i active" id="b-home" onclick="goTab('home')">🏠<span>Home</span></div>
   <div class="nav-i" id="b-search" onclick="goTab('search')">🔍<span>Search</span></div>
