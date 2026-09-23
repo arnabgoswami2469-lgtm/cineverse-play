@@ -60,7 +60,7 @@
 
     async function fetchMovies() {
       const container = document.getElementById('movies-container');
-      const { data, error } = await client.from('movies').select('*');
+      const { data, error } = await client.from('Movies, Web Series').select('*');
       if (error || !data || data.length === 0) {
         container.innerHTML = '<p style="color:#aaa;">কোনো কন্টেন্ট পাওয়া যায়নি।</p>';
         return;
