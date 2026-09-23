@@ -1,81 +1,46 @@
 <!DOCTYPE html>
-<html lang="bn" style="background-color:#05070a;color-scheme:dark;">
+<html lang="bn" style="background:#05070a;color-scheme:dark;">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>CINEVERSE PLAY</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#05070a"><meta name="color-scheme" content="dark">
-<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
-<style>
-/* Instant Dark Background to Stop White Flash */
-html,body{background-color:#05070a !important;margin:0;padding:0;overflow-x:hidden;}
-</style>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#05070a">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--g:#e5a93b;--bg:#07090e;--c:#121622;--t:#8e95a5;}
+:root{--g:#e5a93b;--bg:#07090e;--c:#111520;--t:#8e95a5;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans',sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
+html,body{background:#05070a;color:#fff;overflow-x:hidden;font-size:13px;}
+body{background:var(--bg);padding-bottom:70px;}
 
-/* ==========================================
-   100% COVER CINEMATIC SPLASH SCREEN 
-   ========================================== */
-#splash{
-  position:fixed;top:0;left:0;width:100vw;height:100vh;
-  background:#05070a;z-index:999999;
-  display:flex;flex-direction:column;justify-content:center;align-items:center;
-  transition:opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#splash.fade-out{opacity:0;pointer-events:none;}
-.splash-box{
-  display:flex;flex-direction:column;align-items:center;
-  animation:splashZoom 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-.splash-logo{
-  width:95px;height:95px;border-radius:20px;
-  object-fit:cover;box-shadow:0 8px 30px rgba(229,169,59,0.3);
-}
-.splash-title{
-  margin-top:16px;font-size:24px;font-weight:900;letter-spacing:1.5px;
-  background:linear-gradient(135deg,#ffffff 45%,#e5a93b 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.splash-tagline{
-  position:absolute;bottom:45px;text-align:center;
-  color:#64748b;font-size:11px;font-weight:800;letter-spacing:2px;
-  text-transform:uppercase;animation:splashFadeIn 1.4s ease forwards;
-}
-.splash-tagline span{color:var(--g);}
+/* CINEMATIC SPLASH */
+#sp{position:fixed;inset:0;background:#05070a;z-index:999999;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .6s ease;}
+#sp.hide{opacity:0;pointer-events:none;}
+.sp-box{display:flex;flex-direction:column;align-items:center;animation:spIn .8s ease forwards;}
+.sp-t{margin-top:14px;font-size:24px;font-weight:900;letter-spacing:1px;background:linear-gradient(135deg,#fff 40%,var(--g) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sp-sub{position:absolute;bottom:45px;color:#64748b;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
+.sp-sub span{color:var(--g);}
+@keyframes spIn{0%{transform:scale(0.8);opacity:0;}100%{transform:scale(1);opacity:1;}}
 
-@keyframes splashZoom{
-  0%{transform:scale(0.8);opacity:0;}
-  100%{transform:scale(1);opacity:1;}
-}
-@keyframes splashFadeIn{
-  0%{opacity:0;transform:translateY(10px);}
-  100%{opacity:1;transform:translateY(0);}
-}
-
-/* Header & Navigation */
-.top{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(7,9,14,.95);border-bottom:1px solid rgba(229,169,59,.25);}
+/* HEADER */
+.top{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(7,9,14,.96);border-bottom:1px solid rgba(229,169,59,.2);}
 .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;cursor:pointer;}
-.brand-img{width:26px;height:26px;border-radius:6px;object-fit:cover;}
 .badges{display:flex;gap:6px;}
 .badge{background:rgba(255,255,255,.08);border:1px solid rgba(229,169,59,.35);padding:4px 9px;border-radius:15px;font-size:11px;font-weight:700;cursor:pointer;}
 
+/* TABS & UI */
 .tab{display:none;padding:55px 14px 20px;} .tab.active{display:block;}
 .btn-g{background:linear-gradient(135deg,#f5b748,#d89020);color:#000;border:none;padding:10px;border-radius:7px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;display:inline-block;}
 .btn-o{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:10px;border-radius:7px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;display:inline-block;}
-.hero{min-height:380px;display:flex;flex-direction:column;justify-content:flex-end;padding:16px 0;background:linear-gradient(180deg,transparent,#07090e),url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=700') center/cover;}
-.c-box{background:#111520;border:1px solid rgba(229,169,59,.3);padding:10px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;margin:12px 0;}
+.hero{min-height:360px;display:flex;flex-direction:column;justify-content:flex-end;padding:16px 0;background:linear-gradient(180deg,transparent,#07090e),url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=700') center/cover;}
+.c-box{background:var(--c);border:1px solid rgba(229,169,59,.3);padding:10px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;margin:12px 0;}
 .sec-t{font-size:14px;font-weight:700;margin:14px 0 8px;display:flex;align-items:center;gap:6px;}
 .sec-t::before{content:'';width:3px;height:12px;background:var(--g);}
 .lang-g{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.lang-i{height:46px;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-weight:700;font-size:13px;cursor:pointer;}
+.lang-i{height:46px;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-weight:700;cursor:pointer;}
 .item{background:var(--c);padding:12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer;}
-.w-card{background:#111520;border:1px solid var(--g);border-radius:10px;padding:16px;text-align:center;margin-bottom:12px;}
+.w-card{background:var(--c);border:1px solid var(--g);border-radius:10px;padding:16px;text-align:center;margin-bottom:12px;}
 .chips{display:flex;gap:6px;justify-content:center;margin:8px 0 12px;}
 .chip{background:#18202d;border:1px solid rgba(229,169,59,.3);padding:5px 10px;border-radius:5px;cursor:pointer;}
 .chip.active{background:var(--g);color:#000;font-weight:700;}
-.pay-r{background:#111520;border:1px solid rgba(255,255,255,.1);padding:10px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;cursor:pointer;}
+.pay-r{background:var(--c);border:1px solid rgba(255,255,255,.1);padding:10px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;cursor:pointer;}
 .pay-r.sel{border-color:var(--g);background:#161d28;}
 .sheet{display:none;position:fixed;bottom:60px;left:10px;right:10px;background:#121622;border:1px solid var(--g);border-radius:12px;padding:12px;z-index:99;}
 .sheet-g{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;}
@@ -89,20 +54,29 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
 </head>
 <body>
 
-<!-- 1. FULLSCREEN CINEMATIC SPLASH -->
-<div id="splash">
-  <div class="splash-box">
-    <!-- 3D Logo from your file icon.png (Fallback to 57775.png) -->
-    <img src="icon.png" onerror="this.onerror=null;this.src='57775.png';" class="splash-logo" alt="Cineverse Play">
-    <div class="splash-title">CINEVERSE PLAY</div>
+<!-- 1. SPLASH -->
+<div id="sp">
+  <div class="sp-box">
+    <svg width="85" height="85" viewBox="0 0 100 100">
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF9900"/><stop offset="50%" stop-color="#FF1E56"/><stop offset="100%" stop-color="#CC0066"/></linearGradient>
+        <linearGradient id="g2" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7B2CBF"/><stop offset="100%" stop-color="#C77DFF"/></linearGradient>
+      </defs>
+      <path d="M20 18 C38 6, 68 6, 78 18 C88 28, 76 40, 64 40 C48 40, 32 54, 28 70 C22 86, 8 76, 12 60 Z" fill="url(#g1)"/>
+      <path d="M78 18 C88 32, 90 52, 80 72 C70 90, 46 92, 34 80 C48 80, 72 58, 72 32 Z" fill="url(#g2)"/>
+    </svg>
+    <div class="sp-t">CINEVERSE PLAY</div>
   </div>
-  <div class="splash-tagline">The Universe of <span>Pure Cinema</span></div>
+  <div class="sp-sub">The Universe of <span>Pure Cinema</span></div>
 </div>
 
-<!-- 2. TOP HEADER -->
+<!-- 2. HEADER -->
 <div class="top">
   <div class="brand" onclick="goTab('home')">
-    <img src="icon.png" onerror="this.onerror=null;this.src='57775.png';" class="brand-img" alt="Logo">
+    <svg width="24" height="24" viewBox="0 0 100 100">
+      <path d="M20 18 C38 6, 68 6, 78 18 C88 28, 76 40, 64 40 C48 40, 32 54, 28 70 C22 86, 8 76, 12 60 Z" fill="url(#g1)"/>
+      <path d="M78 18 C88 32, 90 52, 80 72 C70 90, 46 92, 34 80 C48 80, 72 58, 72 32 Z" fill="url(#g2)"/>
+    </svg>
     <span>CINEVERSE PLAY</span>
   </div>
   <div class="badges">
@@ -122,17 +96,14 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
       <a href="https://forms.gle/GeeHd26qnq1jZrat9" target="_blank" class="btn-o" style="flex:1;">Submit Film</a>
     </div>
   </div>
-
   <div class="c-box">
     <div><b>Are you a Filmmaker?</b><p style="color:#aaa;font-size:11px;">Stream your film on platform</p></div>
     <a href="https://forms.gle/GeeHd26qnq1jZrat9" target="_blank" class="btn-g" style="padding:6px 10px;font-size:11px;">Apply Now</a>
   </div>
-
   <div class="sec-t">Spotlight</div>
   <div style="background:#11141d;border:1px dashed rgba(229,169,59,.3);padding:18px;border-radius:8px;text-align:center;color:#888;">
     <b>New Premieres Arriving Soon</b>
   </div>
-
   <div class="sec-t">Languages</div>
   <div class="lang-g">
     <div class="lang-i" style="background:linear-gradient(135deg,#1d4e89,#0077b6)" onclick="goTab('search')">Bengali</div>
@@ -144,7 +115,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
 
 <!-- 4. SEARCH TAB -->
 <div id="search" class="tab">
-  <input type="text" placeholder="Search films, categories..." style="width:100%;padding:10px;background:#111520;border:1px solid rgba(229,169,59,.3);color:#fff;border-radius:6px;outline:none;">
+  <input type="text" placeholder="Search films, categories..." style="width:100%;padding:10px;background:var(--c);border:1px solid rgba(229,169,59,.3);color:#fff;border-radius:6px;outline:none;">
   <div class="sec-t">Trending</div>
   <div class="item" onclick="alert('শীঘ্রই আসছে')"><span>1. New Premieres 2026</span><span style="color:var(--g)">›</span></div>
   <div class="item" onclick="alert('শীঘ্রই আসছে')"><span>2. Short Films & Drama</span><span style="color:var(--g)">›</span></div>
@@ -161,7 +132,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
 
 <!-- 6. PROFILE TAB -->
 <div id="profile" class="tab">
-  <div style="text-align:center;background:#111520;padding:14px;border-radius:8px;border:1px solid rgba(229,169,59,.2);margin-bottom:10px;">
+  <div style="text-align:center;background:var(--c);padding:14px;border-radius:8px;border:1px solid rgba(229,169,59,.2);margin-bottom:10px;">
     <div style="font-size:26px;">👤</div>
     <b>Arnab</b>
     <p style="color:var(--t);font-size:11px;">CINEVERSE PLAY Account</p>
@@ -208,7 +179,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
   <button class="btn-o" style="padding:4px 8px;font-size:11px;margin-bottom:8px;" onclick="goTab('home')">‹ Back</button>
   <div style="font-size:32px;margin-top:10px;">🎁</div>
   <h3>Invite & Earn Coins!</h3>
-  <div style="background:#111520;border:1px dashed var(--g);padding:10px;margin:12px 0;border-radius:6px;">
+  <div style="background:var(--c);border:1px dashed var(--g);padding:10px;margin:12px 0;border-radius:6px;">
     <h2 style="color:var(--g);letter-spacing:2px;margin:2px 0;">CINEVERSE</h2>
     <button class="btn-g" style="padding:4px 10px;font-size:10px;" onclick="navigator.clipboard.writeText('CINEVERSE');alert('কোড কপি হয়েছে!');">Copy</button>
   </div>
@@ -224,7 +195,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
   <div class="item" onclick="alert('CINEVERSE PLAY v2.4')"><span>App Version</span><span>v2.4</span></div>
 </div>
 
-<!-- Bottom Action Sheet -->
+<!-- BOTTOM SHEET -->
 <div class="sheet" id="sheet">
   <div class="sheet-g">
     <div class="s-btn" onclick="goTab('purchase');toggleS();">🎟️<br>Purchase</div>
@@ -234,7 +205,7 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
   </div>
 </div>
 
-<!-- Bottom Navigation Bar -->
+<!-- NAVIGATION -->
 <div class="nav">
   <div class="nav-i active" id="b-home" onclick="goTab('home')">🏠<span>Home</span></div>
   <div class="nav-i" id="b-search" onclick="goTab('search')">🔍<span>Search</span></div>
@@ -244,15 +215,14 @@ body{background:var(--bg);color:#fff;padding-bottom:70px;font-size:13px;}
 </div>
 
 <script>
-// Perfectly timed 2.8s splash screen with clean removal
 window.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
-    const s = document.getElementById('splash');
+    const s = document.getElementById('sp');
     if (s) {
-      s.classList.add('fade-out');
-      setTimeout(() => { s.style.display = 'none'; }, 700);
+      s.classList.add('hide');
+      setTimeout(() => { s.style.display = 'none'; }, 600);
     }
-  }, 2800);
+  }, 2300);
 });
 
 let amt=100,pay='gpay';
@@ -278,5 +248,4 @@ function payNow(){
 }
 </script>
 </body>
-   </html>
-     
+</html>
