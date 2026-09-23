@@ -2,111 +2,552 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CINEVERSE PLAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-    body { background-color: #0b0b12; color: #fff; padding-bottom: 60px; }
-    header { background: #14141f; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e50914; position: sticky; top: 0; z-index: 100; }
-    .logo { font-size: 22px; font-weight: bold; color: #e50914; letter-spacing: 1px; }
-    .hero { position: relative; width: 100%; height: 260px; background: linear-gradient(to top, #0b0b12, transparent), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200') center/cover; display: flex; align-items: flex-end; padding: 20px; }
-    .hero h1 { font-size: 22px; margin-bottom: 6px; }
-    .container { padding: 20px 15px; }
-    h2 { font-size: 18px; margin-bottom: 15px; border-left: 4px solid #e50914; padding-left: 10px; }
-    .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
-    .card { background: #181824; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-    .card:active { transform: scale(0.97); }
-    .card img { width: 100%; height: 190px; object-fit: cover; display: block; }
-    .card-info { padding: 10px; }
-    .card-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .card-cat { font-size: 11px; color: #999; margin-top: 4px; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999; justify-content: center; align-items: center; flex-direction: column; padding: 15px; }
-    .modal video { width: 100%; max-width: 800px; max-height: 70vh; border-radius: 8px; outline: none; }
-    .close-btn { margin-top: 15px; background: #e50914; border: none; color: #fff; padding: 10px 25px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; }
+    :root {
+      --primary: #00c288;
+      --bg: #07090e;
+      --card-bg: #181c26;
+      --text-muted: #8e95a5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: #ffffff;
+      padding-bottom: 85px;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation Bar */
+    .top-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: linear-gradient(180deg, rgba(7, 9, 14, 0.95) 0%, rgba(7, 9, 14, 0) 100%);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .brand img {
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .brand span {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .top-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-pill {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    /* Hero Banner */
+    .hero-section {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      background: linear-gradient(180deg, rgba(7, 9, 14, 0.3) 0%, rgba(7, 9, 14, 0.6) 60%, #07090e 100%),
+                  url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px 16px;
+    }
+
+    .meta-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #d1d5db;
+      font-weight: 500;
+    }
+
+    .genre-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(6px);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-synopsis {
+      font-size: 13px;
+      line-height: 1.45;
+      color: #9ca3af;
+      margin-bottom: 18px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .btn-watch {
+      flex: 1;
+      background: var(--primary);
+      color: #042417;
+      border: none;
+      padding: 13px 18px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 194, 136, 0.35);
+    }
+
+    .btn-info {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 13px 18px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    /* Slider Dots */
+    .slider-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 4px;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .dot.active {
+      width: 24px;
+      height: 4px;
+      border-radius: 3px;
+      background: var(--primary);
+    }
+
+    /* Filmmaker Submission Banner */
+    .creator-banner {
+      margin: 15px 16px;
+      background: linear-gradient(135deg, #121820 0%, #172421 100%);
+      border: 1px solid rgba(0, 194, 136, 0.3);
+      padding: 14px 16px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .creator-banner p {
+      font-size: 13px;
+      color: #d1d5db;
+    }
+
+    .creator-banner a {
+      background: var(--primary);
+      color: #042417;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Section Content */
+    .section-wrap {
+      padding: 14px 16px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .see-all {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .media-scroller {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scrollbar-width: none;
+    }
+    .media-scroller::-webkit-scrollbar { display: none; }
+
+    .ranked-card {
+      position: relative;
+      flex: 0 0 145px;
+      cursor: pointer;
+    }
+
+    .ranked-card .rank-num {
+      position: absolute;
+      left: -8px;
+      bottom: -15px;
+      font-size: 70px;
+      font-weight: 900;
+      color: #123429;
+      -webkit-text-stroke: 2px var(--primary);
+      z-index: 1;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .ranked-card img {
+      width: 100%;
+      height: 205px;
+      object-fit: cover;
+      border-radius: 12px;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Video Player Modal */
+    .video-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 2000;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-modal video {
+      width: 100%;
+      max-height: 80vh;
+      outline: none;
+    }
+
+    .close-video {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Bottom App Navigation Bar */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: rgba(10, 13, 19, 0.96);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 999;
+      padding: 0 10px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .nav-item.active {
+      color: #ffffff;
+    }
+
+    .nav-item.active::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 50%;
+      position: absolute;
+      bottom: -7px;
+    }
+
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2;
+    }
+
+    .nav-fab-wrap {
+      position: relative;
+      top: -14px;
+    }
+
+    .nav-fab {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00e5a3 0%, #00b07a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(0, 194, 136, 0.45);
+      border: 3px solid var(--bg);
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo" style="display: flex; align-items: center; gap: 10px;">
-  <img src="IMG_20260923_110547.png" alt="Logo" style="height: 36px; object-fit: contain;">
-  <span style="font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 0.5px;">CINEVERSE PLAY</span>
-  </div>
-    <a href="https://forms.gle/vRqEMnRL9Kn5JWHm7"target="_blank" style="background: #e50914; color: #ffffff; text-decoration: none; padding: 7px 14px; border-radius: 20px;font-size: 12px; font-weight: 700; box-shadow: 0 2px 8px rgba(229,9,20,0.4); text-transform: uppercase;">
-      Submit Film
+
+  <!-- Top Header Bar -->
+  <header class="top-header">
+    <a href="#" class="brand">
+      <img src="logo.png" alt="Logo">
+      <span>CINEVERSE PLAY</span>
     </a>
+    
+    <div class="top-badges">
+      <div class="badge-pill">
+        <svg fill="currentColor" viewBox="0 0 24 24" style="color: var(--primary); width: 14px; height: 14px;">
+          <path d="M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.99 1-1.72V9c0-.73-.41-1.37-1-1.72zM20 9v6h-7V9h7z"/>
+        </svg>
+        <span>₹0</span>
+      </div>
+      <div class="badge-pill">
+        <span style="font-size: 13px;">🪙</span>
+        <span>0</span>
+      </div>
+    </div>
   </header>
-  <div class="hero">
+
+  <!-- Immersive Hero Banner -->
+  <section class="hero-section">
+    <div class="meta-tags">
+      <span>2026 • Featured</span>
+      <span class="genre-badge">DRAMA</span>
+    </div>
+    
+    <h1 class="hero-title">জলছবির ক্যানভাস</h1>
+    
+    <p class="hero-synopsis">
+      একটি ব্যতিক্রমী অনুভূতির গল্প ও জীবনের ক্যানভাসে আঁকা কিছু না-বলা মুহূর্ত...
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn-watch" onclick="openPlayer('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Watch Now
+      </button>
+      <button class="btn-info" onclick="alert('সিনেমা সম্পর্কিত আরও তথ্য শীঘ্রই যুক্ত করা হচ্ছে!')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        More Info
+      </button>
+    </div>
+
+    <!-- Carousel Dots -->
+    <div class="slider-dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </section>
+
+  <!-- Creator Submission Banner -->
+  <div class="creator-banner">
     <div>
-      <h1>সিনেমা ও বিনোদন</h1>
-      <p style="color: #bbb; font-size: 13px;">অনলাইনে স্ট্রিম করুন যেকোনো সময়</p>
+      <p style="font-weight: 700; color: #fff; margin-bottom: 2px;">Submit Your Film</p>
+      <p>Stream your cinema on CINEVERSE PLAY</p>
+    </div>
+    <!-- আপনার আসল গুগল ফর্মের লিঙ্ক নিচে href-এ বসিয়ে দেবেন -->
+    <a href="https://forms.google.com" target="_blank" id="form-link">Apply Now →</a>
+  </div>
+
+  <!-- Row 1: Spotlight (Numbered Ranking) -->
+  <div class="section-wrap">
+    <div class="section-header">
+      <div class="section-title">Spotlight</div>
+      <a href="#" class="see-all">See All ›</a>
+    </div>
+
+    <div class="media-scroller">
+      <div class="ranked-card" onclick="openPlayer('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')">
+        <span class="rank-num">1</span>
+        <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" alt="Spotlight 1">
+      </div>
+      <div class="ranked-card" onclick="openPlayer('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4')">
+        <span class="rank-num">2</span>
+        <img src="https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=500" alt="Spotlight 2">
+      </div>
+      <div class="ranked-card" onclick="openPlayer('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4')">
+        <span class="rank-num">3</span>
+        <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=500" alt="Spotlight 3">
+      </div>
     </div>
   </div>
 
-  <div class="container">
-      <div style="background: linear-gradient(90deg, #1f1f2e, #14141f); border-left: 4px solid #e50914; padding: 15px; border-radius: 8px; margin: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-    <div>
-      <h3 style="font-size: 15px; margin-bottom: 4px; color: #fff;">Are you a Filmmaker or Creator?</h3>
-      <p style="font-size: 12px; color: #aaa;">Stream your film or web series on CINEVERSE PLAY.</p>
-    </div>
-  
-    <h2>সর্বশেষ কন্টেন্ট</h2>
-    <div class="movie-grid" id="movies-container">
-      <p style="color:#777;">কন্টেন্ট লোড হচ্ছে...</p>
-    </div>
+  <!-- Video Player Modal -->
+  <div class="video-modal" id="video-modal">
+    <button class="close-video" onclick="closePlayer()">✕ Close</button>
+    <video id="player" controls playsinline></video>
   </div>
 
-  <div class="modal" id="player-modal">
-    <video id="video-player" controls playsinline></video>
-    <button class="close-btn" onclick="closePlayer()">বন্ধ করুন</button>
-  </div>
+  <!-- Bottom App Navigation Bar -->
+  <nav class="bottom-bar">
+    <a href="#" class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+
+    <a href="#" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </a>
+
+    <div class="nav-fab-wrap">
+      <div class="nav-fab" onclick="alert('Cineverse Quick Action')">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#042417">
+          <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <a href="#" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/></svg>
+      <span>Rewards</span>
+    </a>
+
+    <a href="#" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
 
   <script>
-    const SUPABASE_URL = "https://tysjciwbfbnrgctofntj.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_ai7wqigMAFfVmo_pwWzNDg_pQsKPjPR";
-
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    async function fetchMovies() {
-      const container = document.getElementById('movies-container');
-      const { data, error } = await client.from('Movies, Web Series').select('*');
-      if (error || !data || data.length === 0) {
-        container.innerHTML = '<p style="color:#aaa;">কোনো কন্টেন্ট পাওয়া যায়নি।</p>';
-        return;
-      }
-      container.innerHTML = '';
-      data.forEach(movie => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.onclick = () => playMovie(movie.video_url);
-        card.innerHTML = `
-          <img src="${movie.thumbnail_url || 'https://via.placeholder.com/150x200'}" alt="${movie.title}">
-          <div class="card-info">
-            <div class="card-title">${movie.title}</div>
-            <div class="card-cat">${movie.category || 'Movie'}</div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function playMovie(url) {
-      const modal = document.getElementById('player-modal');
-      const player = document.getElementById('video-player');
+    function openPlayer(url) {
+      const modal = document.getElementById('video-modal');
+      const player = document.getElementById('player');
       player.src = url;
       modal.style.display = 'flex';
       player.play();
     }
 
     function closePlayer() {
-      const modal = document.getElementById('player-modal');
-      const player = document.getElementById('video-player');
+      const modal = document.getElementById('video-modal');
+      const player = document.getElementById('player');
       player.pause();
       player.src = '';
       modal.style.display = 'none';
     }
-
-    fetchMovies();
   </script>
 </body>
 </html>
