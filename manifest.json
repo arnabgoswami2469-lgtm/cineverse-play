@@ -1,1 +1,32 @@
-[https://arnabgoswami2469-lgtm.github.io/cineverse-play/manifest.json](https://arnabgoswami2469-lgtm.github.io/cineverse-play/manifest.json)
+{
+  "id": "cineverse-play-app",
+  "name": "CINEVERSE PLAY",
+  "short_name": "Cineverse",
+  "description": "Stream independent films and series on CINEVERSE PLAY",
+  "start_url": "https://arnabgoswami2469-lgtm.github.io/cineverse-play/",
+  "scope": "https://arnabgoswami2469-lgtm.github.io/cineverse-play/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07090e",
+  "theme_color": "#07090e",
+  "icons": [
+    {
+      "src": "https://arnabgoswami2469-lgtm.github.io/cineverse-play/57775.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://arnabgoswami2469-lgtm.github.io/cineverse-play/57775.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://arnabgoswami2469-lgtm.github.io/cineverse-play/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
